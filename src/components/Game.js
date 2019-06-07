@@ -9,9 +9,18 @@ const secretWord = WordService.getRandomWord();
 const Game = () => {
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const vowels = "AEIOU".split("");
+  const numbers = "1234567890".split("");
 
   const [numberOfGuesses, setNumberOfGuesses] = useState(10);
-  const [enteredLetters, setEnteredLetters] = useState([" ", ",", ".", "?"]);
+  const [enteredLetters, setEnteredLetters] = useState([
+    " ",
+    ",",
+    ".",
+    "?",
+    ":",
+    "/",
+    ...numbers
+  ]);
 
   const onButtonClick = char => {
     console.log(char);
