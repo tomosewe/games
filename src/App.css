@@ -1,6 +1,13 @@
 body {
   margin: 0 auto;
   width: 800px;
+  text-align: center;
+}
+
+.word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .letterBox {
@@ -10,4 +17,13 @@ body {
 
 .vowel {
   color: red;
+}
+
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.keyboard__letter {
+  padding: 10px;
 }
