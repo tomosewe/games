@@ -11,6 +11,7 @@ const Game = () => {
   const vowels = "AEIOU".split("");
   const numbers = "1234567890".split("");
 
+  const [gameWon, setGameWon] = useState(false);
   const [numberOfGuesses, setNumberOfGuesses] = useState(10);
   const [enteredLetters, setEnteredLetters] = useState([
     " ",
@@ -22,8 +23,15 @@ const Game = () => {
     ...numbers
   ]);
 
-  const onButtonClick = char => {
-    console.log(char);
+  const checkGameWon = () => {
+    console.log(secretWord);
+    if ([...secretWord].every(letter => enteredLetters.includes(letter))) {
+      console.log("game is won");
+      setGameWon(true);
+    }
+  };
+
+  const processLetter = async char => {
     if (!enteredLetters.includes(char)) {
       setEnteredLetters([...enteredLetters, char]);
       if (!secretWord.includes(char)) {
@@ -32,10 +40,15 @@ const Game = () => {
     }
   };
 
+  const onButtonClick = async char => {
+    await processLetter(char);
+    checkGameWon();
+  };
+
   const renderWord = () => (
-    <div className="word">
+    <section className="word">
       <Paper className="word__container">
-        {numberOfGuesses > 0 ? (
+        {numberOfGuesses > 0 || !gameWon ? (
           <React.Fragment>
             {[...secretWord].map((letter, index) => (
               <span
@@ -51,17 +64,17 @@ const Game = () => {
             ({secretWord.length})
           </React.Fragment>
         ) : (
-          <React.Fragment>
+          <p>
             The secret word was: <strong>{secretWord}</strong>.
-          </React.Fragment>
+          </p>
         )}
       </Paper>
-    </div>
+    </section>
   );
 
   const renderKeyboard = () =>
-    numberOfGuesses > 0 ? (
-      <div className="keyboard">
+    numberOfGuesses > 0 || !gameWon ? (
+      <section className="keyboard">
         {alphabet.map(char => (
           <span className="keyboard__letter" key={`keyboard-${char}`}>
             <Button
@@ -74,46 +87,29 @@ const Game = () => {
             </Button>
           </span>
         ))}
-      </div>
+      </section>
+    ) : gameWon ? (
+      <p>You guessed the word correctly!</p>
     ) : (
       <p>YOU LOSE THE GAME</p>
     );
 
   return (
-    <div>
+    <section>
       {renderWord()}
       <hr />
       <p>You have {numberOfGuesses} guesses left!</p>
       <hr />
       {renderKeyboard()}
-    </div>
+    </section>
   );
 };
 
 export default Game;
 
-// reset button
-// if same letter is entered, highlight the letter in the selected letters column
-// show all letters and remove or grey them out, or put a box around them if they've been guessed
-// dont count non letters -use regex
-// show spaces nicely
-// no numbers
-// check uppercase letter
-// maybe letters as buttons, clicking them greys them out, and adds the letter/
-// option to qwerty or alphabet the keyboard
-
-//game object
-
-/*
-  phrase: {
-    isGuessed: false;
-    word: [{
-      letter: a,
-      guessed: false,
-    }]
-  }
-
-
-
-
+/* @TODO:
+   reset button
+   option to qwerty or alphabet the keyboard
+   draw the hangman dude
+   correctly wrap the letters onto new lines
 */
