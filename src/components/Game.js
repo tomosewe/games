@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import Nbsp from "./Nbsp";
 import WordService from "../services/word";
 
 const secretWord = WordService.getRandomWord();
 
 const Game = () => {
-  const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
-  const vowels = "aeiou".split("");
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const vowels = "AEIOU".split("");
 
   const [numberOfGuesses, setNumberOfGuesses] = useState(10);
-  const [enteredLetters, setEnteredLetters] = useState([]);
+  const [enteredLetters, setEnteredLetters] = useState([" ", ",", ".", "?"]);
 
   const onButtonClick = char => {
     console.log(char);
@@ -21,6 +23,33 @@ const Game = () => {
     }
   };
 
+  const renderWord = () => (
+    <div className="word">
+      <Paper className="word__container">
+        {numberOfGuesses > 0 ? (
+          <React.Fragment>
+            {[...secretWord].map((letter, index) => (
+              <span
+                className={`letterBox ${
+                  vowels.includes(letter) ? "vowel" : ""
+                }`}
+                key={`${letter}-${index}`}
+              >
+                {" "}
+                {enteredLetters.includes(letter) ? letter : <Nbsp />}{" "}
+              </span>
+            ))}{" "}
+            ({secretWord.length})
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            The secret word was: <strong>{secretWord}</strong>.
+          </React.Fragment>
+        )}
+      </Paper>
+    </div>
+  );
+
   const renderKeyboard = () =>
     numberOfGuesses > 0 ? (
       <div className="keyboard">
@@ -28,7 +57,7 @@ const Game = () => {
           <span className="keyboard__letter" key={`keyboard-${char}`}>
             <Button
               variant="contained"
-              color="primary"
+              color={vowels.includes(char) ? "secondary" : "primary"}
               onClick={e => onButtonClick(char)}
               disabled={enteredLetters.includes(char)}
             >
@@ -43,28 +72,7 @@ const Game = () => {
 
   return (
     <div>
-      <div className="word">
-        {numberOfGuesses > 0 ? (
-          <p>
-            {[...secretWord].map((letter, index) => (
-              <span
-                className={`letterBox ${
-                  vowels.includes(letter) ? "vowel" : ""
-                }`}
-                key={`${letter}-${index}`}
-              >
-                {" "}
-                {enteredLetters.includes(letter) ? letter : "_"}{" "}
-              </span>
-            ))}{" "}
-            ({secretWord.length})
-          </p>
-        ) : (
-          <p>
-            The secret word was: <strong>{secretWord}</strong>.
-          </p>
-        )}
-      </div>
+      {renderWord()}
       <hr />
       <p>You have {numberOfGuesses} guesses left!</p>
       <hr />
@@ -84,3 +92,19 @@ export default Game;
 // check uppercase letter
 // maybe letters as buttons, clicking them greys them out, and adds the letter/
 // option to qwerty or alphabet the keyboard
+
+//game object
+
+/*
+  phrase: {
+    isGuessed: false;
+    word: [{
+      letter: a,
+      guessed: false,
+    }]
+  }
+
+
+
+
+*/
