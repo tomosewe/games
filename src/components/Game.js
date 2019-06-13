@@ -125,5 +125,14 @@ export default Game;
    option to qwerty or alphabet the keyboard
    draw the hangman dude
    correctly wrap the letters onto new lines
-   using keyboard should trigger buttons - see javascript30 first exercise
+   cool animation when you win! fireworks or confetti
+   sad animation when you lose
+   setup with word api
+    after click on word to go to definition
+    or include definition below word
+    add nice background, maybe moving?
+    look into cool page designs
+    Add top nav for other games
+    make it look like a keyboard?
+  look good on mobile
 */
