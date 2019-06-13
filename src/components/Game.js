@@ -29,8 +29,20 @@ const Game = () => {
     }
   };
 
+  const onKeyDown = (e) => {
+    e.stopImmediatePropagation()
+    const pressedKey = String.fromCharCode(e.keyCode)
+    if (!enteredLetters.includes(pressedKey) || e.keyCode >= 65 || e.keyCode <= 90) {
+      processLetter(pressedKey)
+    }
+  }
+
   useEffect(() => {
     checkGameWon();
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
   });
 
   const processLetter = char => {
@@ -55,7 +67,7 @@ const Game = () => {
               <span
                 className={`letterBox ${
                   vowels.includes(letter) ? "vowel" : ""
-                }`}
+                  }`}
                 key={`${letter}-${index}`}
               >
                 {" "}
@@ -65,10 +77,10 @@ const Game = () => {
             ({secretWord.length})
           </React.Fragment>
         ) : (
-          <p>
-            The secret word was: <strong>{secretWord}</strong>.
+            <p>
+              The secret word was: <strong>{secretWord}</strong>.
           </p>
-        )}
+          )}
       </Paper>
     </section>
   );
@@ -92,8 +104,8 @@ const Game = () => {
     ) : gameWon ? (
       <p>You guessed the word correctly!</p>
     ) : (
-      <p>YOU LOSE THE GAME</p>
-    );
+          <p>YOU LOSE THE GAME</p>
+        );
 
   return (
     <section>
